@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.so
+build/
+dist/
+*.egg-info/
+data/
+outputs/
+log/
+log_tmp/
+ScribbleMedicalLogs/
+*.pth
+*.pt
+*.ckpt
+.vscode/
