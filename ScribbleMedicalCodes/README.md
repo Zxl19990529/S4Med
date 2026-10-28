@@ -23,6 +23,8 @@ The tree-filter extension is required when `--l_tree` is nonzero.  No compiled b
 
 Put a released dataset under `data/` or pass its path with `--dataset_path`.
 
+The fixed splits for both datasets are maintained in [`../MakeScribbleMedicalDatasets/ImageSets/`](../MakeScribbleMedicalDatasets/ImageSets/). Follow the [split installation guide](../MakeScribbleMedicalDatasets/README.md#fixed-trainvalidation-splits) to copy them into the dataset layout below.
+
 ```text
 data/ScribbleBraTS/
   images/{slice}_t1.png
@@ -42,9 +44,9 @@ data/ScribbleMyoPS/
   ImageSets/SegmentationAug/{train,val}.txt
 ```
 
-Pseudo-label directories are generated separately with the official [ScribblePrompt repository](https://github.com/halleewong/ScribblePrompt).  They are not generated or redistributed here.  For BraTS, the expected directories are `t1_vit_l_pseudo`, `t1ce_vit_l_pseudo`, `t2_vit_l_pseudo`, and `flair_vit_l_pseudo`.  For MyoPS, they are `C0_vit_l_pseudo`, `DE_vit_l_pseudo`, and `T2_vit_l_pseudo`.
+Pseudo-labels are generated separately with the official [ScribblePrompt repository](https://github.com/halleewong/ScribblePrompt). For BraTS, the default directories are `t1_vit_l_pseudo`, `t1ce_vit_l_pseudo`, `t2_vit_l_pseudo`, and `flair_vit_l_pseudo`. The released ScribbleMyoPS archive contains `C0_ScribblePromptSAM_pseudo`, `DE_ScribblePromptSAM_pseudo`, and `T2_ScribblePromptSAM_pseudo`; select these folders with `--pesudo_1`, `--pesudo_2`, and `--pesudo_3`, as shown below.
 
-These directories live under the dataset root. Each contains `<slice>_<sequence>.png`, for example `t1ce_vit_l_pseudo/<slice>_t1ce.png` or `DE_vit_l_pseudo/<slice>_DE.png`, with the same class values as the dense reference mask.
+These directories live under the dataset root. Each contains `<slice>_<sequence>.png`, for example `t1ce_vit_l_pseudo/<slice>_t1ce.png` or `DE_ScribblePromptSAM_pseudo/<slice>_DE.png`, with the same class values as the dense reference mask.
 
 BraTS uses background, Non-Enhanced Tumor (NET), Edema Tumor (ED), and Enhanced Tumor (ET) labels.  The released PNG convention is ED=1, NET=2, and ET=3; the BraTS regional evaluator therefore computes ET from label 3, TC from labels 2 and 3, and WT from labels 1, 2, and 3.  ScribbleMyoPS uses background plus LV normal myocardium (LVn), LV blood pool (LVb), RV blood pool (RVb), LV edema (LVe), and LV scar (LVs).  The metric scripts exclude a class from a slice-level summary when both prediction and reference are empty for that class.
 
@@ -63,7 +65,7 @@ python trainBraTS.py --dataset_path data/ScribbleBraTS --dataset ScribblePseudo 
 For ScribbleMyoPS, use 50 epochs, label smoothing 0.1, and weights 0.4 for the tree loss and each sequence pseudo-label loss:
 
 ```bash
-python trainMyoPS.py --dataset_path data/ScribbleMyoPS --dataset ScribblePseudo --model_type deeplabv3p --layers 101 --numclasses 6 --modality 0 1 2 --epochs 50 --batchsize 32 --lr 5e-3 --label_smooth 0.1 --l_segs 1 --l_tree 0.4 --l_segp_1 0.4 --l_segp_2 0.4 --l_segp_3 0.4 --logdir outputs/ScribbleMyoPS
+python trainMyoPS.py --dataset_path data/ScribbleMyoPS --dataset ScribblePseudo --model_type deeplabv3p --layers 101 --numclasses 6 --modality 0 1 2 --pesudo_1 C0_ScribblePromptSAM_pseudo --pesudo_2 DE_ScribblePromptSAM_pseudo --pesudo_3 T2_ScribblePromptSAM_pseudo --epochs 50 --batchsize 32 --lr 5e-3 --label_smooth 0.1 --l_segs 1 --l_tree 0.4 --l_segp_1 0.4 --l_segp_2 0.4 --l_segp_3 0.4 --logdir outputs/ScribbleMyoPS
 ```
 
 To train with scribbles only, set `--dataset ScribbleOnly` and leave `--l_tree` and all `--l_segp_*` values at zero.

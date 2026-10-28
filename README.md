@@ -31,7 +31,7 @@ Download the prepared datasets from Baidu Netdisk:
 
 Extract the corresponding archive and use the directory containing `images/` and `GT/` as the dataset root. Dataset archives are distributed separately from the source code.
 
-The fixed train/validation lists are included for [ScribbleBraTS](MakeScribbleMedicalDatasets/ImageSets/SegmentationAug/) and [ScribbleMyoPS](ScribbleMedicalCodes/splits/ScribbleMyoPS/). Copy them into the corresponding dataset's `ImageSets/SegmentationAug/` directory.
+The fixed train/validation lists are included for [ScribbleBraTS](MakeScribbleMedicalDatasets/ImageSets/ScribbleBraTS/SegmentationAug/) and [ScribbleMyoPS](MakeScribbleMedicalDatasets/ImageSets/ScribbleMyoPS/SegmentationAug/). Copy each dataset's `SegmentationAug/` directory into its dataset root's `ImageSets/` directory, following the [split installation guide](MakeScribbleMedicalDatasets/README.md#fixed-trainvalidation-splits).
 
 ## Pseudo-labels
 

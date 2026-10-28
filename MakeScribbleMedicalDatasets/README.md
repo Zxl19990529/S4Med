@@ -1,8 +1,33 @@
-# ScribbleBraTS preparation
+# Dataset preparation and fixed splits
 
-This directory prepares the 2-D ScribbleBraTS dataset used by S4Med. It converts BraTS 2023 GLI NIfTI cases to PNG slices, generates sparse annotations from dense masks, and provides the frozen patient-level split used in the paper.
+This directory contains ScribbleBraTS construction tools and the frozen patient-level train/validation splits for both ScribbleBraTS and ScribbleMyoPS.
 
 Run the commands below from `MakeScribbleMedicalDatasets/`.
+
+## Fixed train/validation splits
+
+```text
+ImageSets/
+  ScribbleBraTS/SegmentationAug/{train,val}.txt
+  ScribbleMyoPS/SegmentationAug/{train,val}.txt
+```
+
+| Dataset | Training patients | Validation patients | Training slices | Validation slices |
+| --- | --- | --- | --- | --- |
+| ScribbleBraTS | 875 | 376 | 121,785 | 52,304 |
+| ScribbleMyoPS | 140 | 60 | 577 | 239 |
+
+The patient sets do not overlap between training and validation. To install the paper splits in your dataset directories:
+
+```bash
+mkdir -p /path/to/ScribbleBraTS/ImageSets /path/to/ScribbleMyoPS/ImageSets
+cp -r ImageSets/ScribbleBraTS/SegmentationAug /path/to/ScribbleBraTS/ImageSets/
+cp -r ImageSets/ScribbleMyoPS/SegmentationAug /path/to/ScribbleMyoPS/ImageSets/
+```
+
+Each dataset loader reads `<dataset_root>/ImageSets/SegmentationAug/train.txt` and `val.txt`.
+
+## ScribbleBraTS preparation
 
 Install the dependencies in a clean Python environment. The preparation code was checked with Python 3.11 and scikit-image 0.25.2:
 
@@ -34,7 +59,7 @@ python generate_brats_scribbles.py --image-dir /path/to/ScribbleBraTS/images --l
 
 Each scribble PNG uses `0`, `1`, `2`, and `3` for annotated background, Edema Tumor (ED), Non-Enhanced Tumor (NET), and Enhanced Tumor (ET) pixels respectively; all unannotated pixels are `255` and must be passed to a loss with ignore index `255`. A pure-background slice is stored as all-zero because its background is fully annotated.
 
-`ImageSets/SegmentationAug/train.txt` and `val.txt` are the frozen paper split: 875/376 patients and 121,785/52,304 slices, with no patient overlap. Copy this `ImageSets` directory into the dataset root after preprocessing. The supplied manifests are preferred for reproduction. `split_brats_patients.py` is provided only to make a new patient-level split when necessary:
+Install the frozen ScribbleBraTS split described above after preprocessing. `split_brats_patients.py` is provided only to make a new patient-level split when necessary:
 
 ```bash
 python split_brats_patients.py --label-dir /path/to/ScribbleBraTS/GT --output-dir /path/to/ScribbleBraTS/ImageSets/SegmentationAug --train-ratio 0.7 --seed 3407
