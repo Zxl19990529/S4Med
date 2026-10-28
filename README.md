@@ -22,7 +22,14 @@ Each directory has its own installation instructions and runnable examples. Star
 
 Scribble labels use `0` for background and `255` for unannotated pixels. Class values and filenames are documented in the component guides. BraTS evaluation reports the nested ET, TC, and WT regions derived from the primitive classes.
 
-Dataset archives and pretrained checkpoints are not included in Git. Dataset download links will be added when the archives are released.
+Download the prepared datasets from Baidu Netdisk:
+
+| Dataset | Archive | Download | Extraction code |
+| --- | --- | --- | --- |
+| ScribbleBraTS | ScribbleBraTS-JBHI | [Baidu Netdisk](https://pan.baidu.com/s/1h_Ga9Cl8ysdsK4BbuLMJYg?pwd=sfgw) | `sfgw` |
+| ScribbleMyoPS | ScribbleMyoPS-JBHI | [Baidu Netdisk](https://pan.baidu.com/s/1ihH0JCe4elCOevjd_pYjGg?pwd=7g4i) | `7g4i` |
+
+Extract the corresponding archive and use the directory containing `images/` and `GT/` as the dataset root. Dataset archives are distributed separately from the source code.
 
 The fixed train/validation lists are included for [ScribbleBraTS](MakeScribbleMedicalDatasets/ImageSets/SegmentationAug/) and [ScribbleMyoPS](ScribbleMedicalCodes/splits/ScribbleMyoPS/). Copy them into the corresponding dataset's `ImageSets/SegmentationAug/` directory.
 
@@ -42,6 +49,14 @@ The paper uses SGD with momentum `0.9`, weight decay `5e-4`, initial learning ra
 | ScribbleMyoPS | 50 | 0.4 | 0.4 |
 
 Use a patient-level train/validation partition, with all slices from one patient in the same partition. Evaluation computes Dice, HD95, and sensitivity per validation slice and reports mean ± standard deviation over valid values. HD95 is measured in pixels.
+
+## License
+
+Original S4Med code and contributions are licensed under the [MIT License](LICENSE). Third-party implementations retain the licenses listed in the [third-party notices](ScribbleMedicalCodes/THIRD_PARTY_NOTICES.md).
+
+The adapted UNet implementation is licensed under GPL-3.0. Distribution of combined works incorporating that implementation is subject to the GPL-3.0 requirements.
+
+The code license applies to software. Dataset use follows the original BraTS and MyoPS dataset terms.
 
 ## Acknowledgments
 

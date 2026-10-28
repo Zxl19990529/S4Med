@@ -1,5 +1,7 @@
 # Third-party notices
 
+Original S4Med code and contributions are licensed under [MIT](../LICENSE). The third-party implementations below retain their original licenses. Distribution of combined works incorporating the GPL-covered UNet implementation is subject to GPL-3.0 requirements.
+
 `models/UNet.py` was adapted from [Pytorch-UNet](https://github.com/milesial/Pytorch-UNet), released under GPL-3.0. See [`../LICENSES/Pytorch-UNet-GPL-3.0.txt`](../LICENSES/Pytorch-UNet-GPL-3.0.txt).
 This release retains its S4Med-specific multi-sequence interface, which returns both logits and decoder features.
 

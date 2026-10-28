@@ -44,4 +44,4 @@ The generator implements the original structure-aware skeleton/boundary simulati
 
 Dense pseudo-labels are not generated in this repository. For that stage, use the official [ScribblePrompt repository](https://github.com/halleewong/ScribblePrompt) and its license.
 
-No BraTS images, NIfTI files, generated PNGs, pseudo-labels, checkpoints, logs, or experiment outputs are included here. Obtain BraTS data through its official access terms. See the [repository README](../README.md) for dataset availability.
+Download the prepared ScribbleBraTS dataset from the [repository download table](../README.md#datasets). To rebuild it from NIfTI files, obtain source images under the original BraTS access terms.
